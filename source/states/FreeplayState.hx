@@ -3,7 +3,6 @@ package states;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
-import backend.MenuBG;
 
 import objects.HealthIcon;
 import objects.MusicPlayer;
@@ -21,7 +20,6 @@ import flixel.addons.display.FlxBackdrop;
 
 import openfl.utils.AssetType;
 import mobile.backend.MobileData;
-import mobile.backend.MobileScaleMode;
 
 import openfl.utils.Assets;
 
@@ -169,7 +167,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		// Ancho real de la pantalla (16:9 = 1280, más ancho si hay pantalla ancha)
-		W = FlxG.width + MobileScaleMode.gameCutoutSize.x * 2;
+		W = FlxG.width;
 		var H:Float = FlxG.height;
 
 		var fontPath:String = Paths.font('vcr.ttf');
@@ -180,7 +178,8 @@ class FreeplayState extends MusicBeatState
 		var aa:Bool = ClientPrefs.data.antialiasing;
 
 		// ---------- Fondo (images/freeplay/bg.png) ----------
-		artBG = MenuBG.create('menuDesat');
+		artBG = new FlxSprite().makeGraphic(Std.int(W), Std.int(H), FlxColor.WHITE);
+		pin(artBG);
 		add(artBG);
 
 		// El fondo (blanco/gris) se pinta directamente con el color de la canción,
@@ -379,9 +378,6 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		updateTexts();
 		startUnlockAnimations();
-
-		var bgWarning:FlxText = MenuBG.warning();
-		if (bgWarning != null) add(bgWarning);
 
 		addSafePad();
 		super.create();
@@ -959,7 +955,7 @@ class FreeplayState extends MusicBeatState
 		FlxTween.num(0, 1, 0.3, {ease: FlxEase.quadOut}, function(v:Float) selectDim = v);
 
 		// Destello blanco
-		var flash:FlxSprite = new FlxSprite().makeGraphic(Std.int(FlxG.width + MobileScaleMode.gameCutoutSize.x * 2), FlxG.height, FlxColor.WHITE);
+		var flash:FlxSprite = new FlxSprite().makeGraphic(Std.int(FlxG.width), FlxG.height, FlxColor.WHITE);
 		flash.scrollFactor.set();
 		flash.alpha = 0.3;
 		add(flash);
