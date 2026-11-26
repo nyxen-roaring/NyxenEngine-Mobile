@@ -29,7 +29,9 @@ jobs:
           haxe-version: 4.3.4
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
 
       - name: Install Haxelib dependencies
         run: |
