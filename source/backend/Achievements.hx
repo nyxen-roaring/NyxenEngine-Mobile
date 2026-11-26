@@ -1,4 +1,5 @@
 package backend;
+
 #if ACHIEVEMENTS_ALLOWED
 import objects.AchievementPopup;
 import haxe.Exception;
@@ -34,6 +35,11 @@ class Achievements {
 		createAchievement('friday_night_play',		{name: "Freaky on a Friday Night", description: "Play on a Friday... Night.", hidden: true});
 		#if BASE_GAME_FILES
 		createAchievement('subscribe_nyx',			{name: "Thanks for subscribing, brother.", description: "Go to the credits and enter the Nyxen Roaring channel."});
+		#end
+		createAchievement('ur_bad',					{name: "What a Funkin' Disaster!", description: "Complete a Song with a rating lower than 20%."});
+		createAchievement('ur_good',				{name: "Perfectionist", description: "Complete a Song with a rating of 100%."});
+		#if BASE_GAME_FILES
+		createAchievement('roadkill_enthusiast',	{name: "Roadkill Enthusiast", description: "Watch the Henchmen die 50 times.", maxScore: 50, maxDecimals: 0});
 		#end
 		createAchievement('oversinging', 			{name: "Oversinging Much...?", description: "Sing for 10 seconds without going back to Idle."});
 		createAchievement('hype',					{name: "Hyperactive", description: "Finish a Song without going back to Idle."});
@@ -230,9 +236,10 @@ class Achievements {
 						var achieve:Dynamic = retVal[i];
 						if(achieve == null)
 						{
-							var errorTitle = 'Mod name: ' + Mods.currentModDirectory != null ? Mods.currentModDirectory : "None";
+							var errorTitle = 'Mod name: ' + (Mods.currentModDirectory != null ? Mods.currentModDirectory : "None");
 							var errorMsg = 'Achievement #${i+1} is invalid.';
-							CoolUtil.showPopUp(errorMsg, errorTitle);
+							lime.app.Application.current.window.alert(errorMsg, errorTitle);
+							trace('$errorTitle - $errorMsg');
 							continue;
 						}
 
@@ -241,7 +248,8 @@ class Achievements {
 						{
 							var errorTitle = 'Error on Achievement: ' + (achieve.name != null ? achieve.name : achieve.save);
 							var errorMsg = 'Missing valid "save" value.';
-							CoolUtil.showPopUp(errorMsg, errorTitle);
+							lime.app.Application.current.window.alert(errorMsg, errorTitle);
+							trace('$errorTitle - $errorMsg');
 							continue;
 						}
 						key = key.trim();
@@ -251,9 +259,10 @@ class Achievements {
 					}
 				}
 			} catch(e:Dynamic) {
-				var errorTitle = 'Mod name: ' + Mods.currentModDirectory != null ? Mods.currentModDirectory : "None";
+				var errorTitle = 'Mod name: ' + (Mods.currentModDirectory != null ? Mods.currentModDirectory : "None");
 				var errorMsg = 'Error loading achievements.json: $e';
-				CoolUtil.showPopUp(errorMsg, errorTitle);
+				lime.app.Application.current.window.alert(errorMsg, errorTitle);
+				trace('$errorTitle - $errorMsg');
 			}
 		}
 		return retVal;
@@ -313,4 +322,3 @@ class Achievements {
 	#end
 }
 #end
-  
