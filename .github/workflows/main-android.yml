@@ -17,6 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
       - name: Set up Haxe
         uses: krdlab/setup-haxe@master
         with:
@@ -39,10 +45,11 @@ jobs:
         run: echo "${{ github.run_id }}" > VERSION
 
       - name: Compile Android
-        run: haxelib run lime build Project.xml android --app-version="4.0.0-${{ github.run_id }}" -D officialBuild
+        run: haxelib run lime build Project.xml android --app-version="0.2.8-${{ github.run_id }}" -D officialBuild
 
       - name: Publish Android Artifact
         uses: actions/upload-artifact@v4
         with:
           name: androidBuild
           path: export/release/android/bin
+          if-no-files-found: error
