@@ -31,7 +31,7 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v4
         with:
-          packages: 'platform-tools'
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0 ndk;21.4.7075529'
 
       - name: Install Haxelib dependencies
         run: |
@@ -41,6 +41,21 @@ jobs:
           sh ./setup/unix.sh
           # Required Android JNI extension (Project.xml requests version 2.2.2)
           haxelib install extension-androidtools 2.2.2 --quiet
+
+      - name: Configure Lime for Android
+        shell: bash
+        run: |
+          NDK_PATH="$ANDROID_HOME/ndk/21.4.7075529"
+          test -d "$NDK_PATH" || { echo "Android NDK not found at $NDK_PATH"; exit 1; }
+
+          haxelib run lime config ANDROID_SETUP true
+          haxelib run lime config ANDROID_SDK "$ANDROID_HOME"
+          haxelib run lime config ANDROID_NDK_ROOT "$NDK_PATH"
+          haxelib run lime config ANDROID_NDK "$NDK_PATH"
+          haxelib run lime config JAVA_HOME "$JAVA_HOME"
+
+          echo "Lime Android configuration:"
+          cat "$HOME/.lime/config.xml"
 
       - name: Skip SScript setup mode
         run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
